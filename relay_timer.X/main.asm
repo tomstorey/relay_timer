@@ -8,10 +8,7 @@
 ;                  from a charger on a schedule.                               *
 ;                                                                              *
 ;                  Based on time from an external RTC, a relay is actuated as  *
-;                  follows:                                                    *
-;                                                                              *
-;                  9am - actuate (connect battery)                             *
-;                  4pm - release (disconnect battery)                          *
+;                  per the jump table timer_table.                             *
 ;                                                                              *
 ;                  This disconnects the battery outside of charging hours to   *
 ;                  prevent the attached battery from continuing to power the   *
@@ -20,6 +17,8 @@
 ;*******************************************************************************
 ;                                                                              *
 ;    Revision History:                                                         *
+;    Date        Who  Description                                              *
+;    02/02/2020  TS   Initial release                                          *
 ;                                                                              *
 ;*******************************************************************************
 
