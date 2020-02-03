@@ -57,17 +57,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=main.asm pic16_idata.asm main_1.asm
+SOURCEFILES_QUOTED_IF_SPACED=main.asm pic16_idata.asm
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/main.o ${OBJECTDIR}/pic16_idata.o ${OBJECTDIR}/main_1.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/main.o.d ${OBJECTDIR}/pic16_idata.o.d ${OBJECTDIR}/main_1.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/main.o ${OBJECTDIR}/pic16_idata.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/main.o.d ${OBJECTDIR}/pic16_idata.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/main.o ${OBJECTDIR}/pic16_idata.o ${OBJECTDIR}/main_1.o
+OBJECTFILES=${OBJECTDIR}/main.o ${OBJECTDIR}/pic16_idata.o
 
 # Source Files
-SOURCEFILES=main.asm pic16_idata.asm main_1.asm
+SOURCEFILES=main.asm pic16_idata.asm
 
 
 CFLAGS=
@@ -110,14 +110,6 @@ ${OBJECTDIR}/pic16_idata.o: pic16_idata.asm  nbproject/Makefile-${CND_CONF}.mk
 	@${DEP_GEN} -d "${OBJECTDIR}/pic16_idata.o"
 	@${FIXDEPS} "${OBJECTDIR}/pic16_idata.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
 	
-${OBJECTDIR}/main_1.o: main_1.asm  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/main_1.o.d 
-	@${RM} ${OBJECTDIR}/main_1.o 
-	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/main_1.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -d__DEBUG -d__MPLAB_DEBUGGER_ICD3=1 -q -p$(MP_PROCESSOR_OPTION) -u  -l\\\"${OBJECTDIR}/main_1.lst\\\" -e\\\"${OBJECTDIR}/main_1.err\\\" $(ASM_OPTIONS)    -o\\\"${OBJECTDIR}/main_1.o\\\" \\\"main_1.asm\\\" 
-	@${DEP_GEN} -d "${OBJECTDIR}/main_1.o"
-	@${FIXDEPS} "${OBJECTDIR}/main_1.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
-	
 else
 ${OBJECTDIR}/main.o: main.asm  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
@@ -134,14 +126,6 @@ ${OBJECTDIR}/pic16_idata.o: pic16_idata.asm  nbproject/Makefile-${CND_CONF}.mk
 	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/pic16_idata.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -q -p$(MP_PROCESSOR_OPTION) -u  -l\\\"${OBJECTDIR}/pic16_idata.lst\\\" -e\\\"${OBJECTDIR}/pic16_idata.err\\\" $(ASM_OPTIONS)    -o\\\"${OBJECTDIR}/pic16_idata.o\\\" \\\"pic16_idata.asm\\\" 
 	@${DEP_GEN} -d "${OBJECTDIR}/pic16_idata.o"
 	@${FIXDEPS} "${OBJECTDIR}/pic16_idata.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
-	
-${OBJECTDIR}/main_1.o: main_1.asm  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/main_1.o.d 
-	@${RM} ${OBJECTDIR}/main_1.o 
-	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/main_1.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -q -p$(MP_PROCESSOR_OPTION) -u  -l\\\"${OBJECTDIR}/main_1.lst\\\" -e\\\"${OBJECTDIR}/main_1.err\\\" $(ASM_OPTIONS)    -o\\\"${OBJECTDIR}/main_1.o\\\" \\\"main_1.asm\\\" 
-	@${DEP_GEN} -d "${OBJECTDIR}/main_1.o"
-	@${FIXDEPS} "${OBJECTDIR}/main_1.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
 	
 endif
 

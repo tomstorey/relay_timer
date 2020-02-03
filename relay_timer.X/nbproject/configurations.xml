@@ -14,7 +14,6 @@
                    projectFiles="true">
       <itemPath>main.asm</itemPath>
       <itemPath>pic16_idata.asm</itemPath>
-      <itemPath>main_1.asm</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
