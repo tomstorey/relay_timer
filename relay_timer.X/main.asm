@@ -19,6 +19,7 @@
 ;    Revision History:                                                         *
 ;    Date        Who  Description                                              *
 ;    02/02/2020  TS   Initial release                                          *
+;    03/02/2020  TS   Enable WDT and PWRT, changes to bit manipulations        *
 ;                                                                              *
 ;*******************************************************************************
 
@@ -36,8 +37,8 @@
 ; Configuration Word Setup
 ;*******************************************************************************
 
- __config _CONFIG1, _FOSC_INTRC_NOCLKOUT & _WDTE_OFF & _PWRTE_OFF & _MCLRE_ON & _CP_OFF & _CPD_OFF & _BOREN_ON & _IESO_OFF & _FCMEN_OFF & _LVP_OFF
- __config _CONFIG2, _BOR4V_BOR40V & _WRT_OFF
+    __config _CONFIG1, _FOSC_INTRC_NOCLKOUT & _WDTE_ON & _PWRTE_ON & _MCLRE_ON & _CP_OFF & _CPD_OFF & _BOREN_ON & _IESO_OFF & _FCMEN_OFF & _LVP_OFF
+    __config _CONFIG2, _BOR4V_BOR40V & _WRT_OFF
 
 ;*******************************************************************************
 ; Variable Definitions
@@ -224,7 +225,8 @@ isr_handler_iocb
     goto    isr_handler_done        ; No, next interrupt
     
     pagesel rtc_interrupt
-    call    rtc_interrupt           ; Handle RTC interrupt
+    btfss   PORTB, PORTB_RTC_INT    ; RTC interrupt?
+    call    rtc_interrupt           ; Yes
     
     bcf     INTCON, RBIF            ; Done with Port B IOC
     
@@ -263,8 +265,7 @@ hb_led_state0
     ; 
     ; In state 0 the HB LED is OFF.
     
-    movlw   ~(1 << PORTC_HB_LED)    ; Turn LED off
-    andwf   portc_out, F
+    bcf     portc_out, PORTC_HB_LED ; Turn LED off
     movf    portc_out, W
     banksel PORTC
     movwf   PORTC
@@ -288,8 +289,7 @@ hb_led_state1
     ; In state 1 we turn the HB LED on and decrement the HB counter a couple of
     ; times to produce a short blip of the LED.
     
-    movlw   1 << PORTC_HB_LED       ; Turn LED on
-    iorwf   portc_out, F
+    bsf     portc_out, PORTC_HB_LED ; Turn LED on
     movf    portc_out, W
     banksel PORTC
     movwf   PORTC
@@ -570,9 +570,9 @@ init_rtc
     movlw   DS_CTRL | DS_WR         ; Start writing from control register again
     call    spi_transfer
     
-    banksel init_rtc_ctrl
-    movf    init_rtc_ctrl, W        ; Set WP bit to lock
-    iorlw   1 << DS_CTRL_WP
+    banksel init_rtc_ctrl           ; Set WP bit to lock
+    bsf     init_rtc_ctrl, DS_CTRL_WP
+    movf    init_rtc_ctrl, W
     call    spi_transfer
     
     call    rtc_ce_low
@@ -610,9 +610,8 @@ spi_transfer
 
 rtc_ce_high
     banksel portc_out
-    movf    portc_out, W            ; Sets RTC CE pin high
-    iorlw   1 << PORTC_RTC_CE
-    movwf   portc_out
+    bsf     portc_out, PORTC_RTC_CE ; Sets RTC CE pin high
+    movf    portc_out, W           
     banksel PORTC
     movwf   PORTC
     
@@ -620,9 +619,8 @@ rtc_ce_high
 
 rtc_ce_low
     banksel portc_out
-    movf    portc_out, W            ; Sets RTC CE pin low
-    andlw   ~(1 << PORTC_RTC_CE)
-    movwf   portc_out
+    bcf     portc_out, PORTC_RTC_CE ; Sets RTC CE pin low
+    movf    portc_out, W           
     banksel PORTC
     movwf   PORTC
     
@@ -644,9 +642,8 @@ update_relay
     
     ; Turn relay off
     banksel portc_out
+    bcf     portc_out, PORTC_RELAY
     movf    portc_out, W
-    andlw   ~(1 << PORTC_RELAY)
-    movwf   portc_out
     banksel PORTC
     movwf   PORTC
     
@@ -661,9 +658,8 @@ update_relay
 update_relay_on
     ; Turn relay on
     banksel portc_out
+    bsf     portc_out, PORTC_RELAY
     movf    portc_out, W
-    iorlw   1 << PORTC_RELAY
-    movwf   portc_out
     banksel PORTC
     movwf   PORTC
     
@@ -699,9 +695,8 @@ toggle_relay_button
     ;   Off       Yes      On
     ;   On        No       On
     ;   On        Yes      Off
-    movlw   1 << PORTB_TOG_BTN
     banksel btn_acks
-    iorwf   btn_acks, F             ; ACK button press
+    bsf     btn_acks, PORTB_TOG_BTN ; ACK button press
     
     movlw   0x01
     xorwf   manual_toggle, F        ; Update toggle bit
@@ -842,15 +837,12 @@ main_loop
     ; Check manual on/off button input
     clrwdt
     
-    movf    btn_acks, W
-    andlw   1 << PORTB_TOG_BTN
-    btfss   STATUS, Z               ; Button press already ACKd?
+    banksel btn_acks
+    btfss   btn_acks, PORTB_TOG_BTN ; Button press already ACKd?
     goto    skip_toggle_button      ; Yes
     
-    movf    btn_state, W
-    andlw   1 << PORTB_TOG_BTN
-    btfss   STATUS, Z               ; Button is pressed?
     pagesel toggle_relay_button
+    btfss   btn_state, PORTB_TOG_BTN ; Button is pressed?
     call    toggle_relay_button     ; Yes
     
 skip_toggle_button
