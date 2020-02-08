@@ -20,6 +20,7 @@
 ;    Date        Who  Description                                              *
 ;    02/02/2020  TS   Initial release                                          *
 ;    03/02/2020  TS   Enable WDT and PWRT, changes to bit manipulations        *
+;    08/02/2020  TS   Re-write, task based                                     *
 ;                                                                              *
 ;*******************************************************************************
 
