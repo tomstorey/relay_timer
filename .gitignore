@@ -1,0 +1,15 @@
+*.*
+
+!.gitignore
+
+!EAGLE/*.epf
+!EAGLE/*.lbr
+!EAGLE/*.pdf
+!EAGLE/*.sch
+
+!relay_timer.X/
+!relay_timer.X/*.asm
+!relay_timer.X/*.inc
+!relay_timer.X/*.lkr
+!relay_timer.X/Makefile
+!relay_timer.X/nbproject/*
