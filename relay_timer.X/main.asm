@@ -479,11 +479,13 @@ rtc_interrupt
     call    rtc_ce_low
     
     ; Alarm 0 interrupt occurred?
+    pagesel rtc_interrupt
     banksel rtc_int_status
     btfss   rtc_int_status, DS_STATUS_IRQF0
     goto    rtc_interrupt_done      ; No
     
     ; Yes, read hours register and store it
+    pagesel spi_transfer
     call    rtc_ce_high
     
     movlw   DS_HOURS                ; Read from hour register
